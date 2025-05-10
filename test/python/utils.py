@@ -9,7 +9,7 @@ class Utils:
     """
 
     PATH = "/tmp/paperai"
-    DBFILE = PATH + "/articles.sqlite"
+    db_file = PATH + "/articles.sqlite"
     VECTORFILE = PATH + "/vectors.magnitude"
 
     @staticmethod

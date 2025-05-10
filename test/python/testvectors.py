@@ -22,14 +22,14 @@ class TestVectors(unittest.TestCase):
         """
 
         # Full index stream
-        self.assertEqual(len(list(RowIterator(Utils.DBFILE))), 34222)
+        self.assertEqual(len(list(RowIterator(Utils.db_file))), 34222)
 
     def testTokens(self):
         """
         Test tokens file creation
         """
 
-        output = Vectors.tokens(Utils.DBFILE)
+        output = Vectors.tokens(Utils.db_file)
         self.assertEqual(Utils.linecount(output), 34222)
 
     def testRun(self):

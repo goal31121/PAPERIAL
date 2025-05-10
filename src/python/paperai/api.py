@@ -28,11 +28,11 @@ class API(txtai.api.API):
         """
 
         if self.embeddings:
-            dbfile = os.path.join(self.config["path"], "articles.sqlite")
+            db_file = os.path.join(self.config["path"], "articles.sqlite")
             limit = self.limit(request.query_params.get("limit")) if request else 10
             threshold = float(request.query_params["threshold"]) if request and "threshold" in request.query_params else None
 
-            with sqlite3.connect(dbfile) as db:
+            with sqlite3.connect(db_file) as db:
                 cur = db.cursor()
 
                 # Query for best matches

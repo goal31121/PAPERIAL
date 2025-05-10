@@ -17,18 +17,18 @@ class RowIterator:
     Iterates over rows in a database query. Allows for multiple iterations.
     """
 
-    def __init__(self, dbfile):
+    def __init__(self, db_file):
         """
         Initializes RowIterator.
 
         Args:
-            dbfile: path to SQLite file
+            db_file: path to SQLite file
         """
 
         # Store database file
-        self.dbfile = dbfile
+        self.db_file = db_file
 
-        self.rows = self.stream(self.dbfile)
+        self.rows = self.stream(self.db_file)
 
     def __iter__(self):
         """
@@ -39,7 +39,7 @@ class RowIterator:
         """
 
         # reset the generator
-        self.rows = self.stream(self.dbfile)
+        self.rows = self.stream(self.db_file)
         return self
 
     def __next__(self):
@@ -56,16 +56,16 @@ class RowIterator:
 
         return result
 
-    def stream(self, dbfile):
+    def stream(self, db_file):
         """
-        Connects to SQLite file at dbfile and yields parsed tokens for each row.
+        Connects to SQLite file at db_file and yields parsed tokens for each row.
 
         Args:
-            dbfile:
+            db_file:
         """
 
         # Connection to database file
-        db = sqlite3.connect(dbfile)
+        db = sqlite3.connect(db_file)
         cur = db.cursor()
 
         cur.execute("SELECT Text FROM sections")
@@ -95,12 +95,12 @@ class Vectors:
     """
 
     @staticmethod
-    def tokens(dbfile):
+    def tokens(db_file):
         """
-        Iterates over each row in dbfile and writes parsed tokens to a temporary file for processing.
+        Iterates over each row in db_file and writes parsed tokens to a temporary file for processing.
 
         Args:
-            dbfile: SQLite file to read
+            db_file: SQLite file to read
 
         Returns:
             path to output file
@@ -113,7 +113,7 @@ class Vectors:
             # Save file path
             tokens = output.name
 
-            for row in RowIterator(dbfile):
+            for row in RowIterator(db_file):
                 output.write(" ".join(row) + "\n")
 
         return tokens
@@ -130,11 +130,11 @@ class Vectors:
             output: output file path
         """
 
-        # Derive path to dbfile
-        dbfile = os.path.join(path, "articles.sqlite")
+        # Derive path to db_file
+        db_file = os.path.join(path, "articles.sqlite")
 
         # Stream tokens to temporary file
-        tokens = Vectors.tokens(dbfile)
+        tokens = Vectors.tokens(db_file)
 
         # Build staticvectors model
         trainer = StaticVectorsTrainer()

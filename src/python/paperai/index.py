@@ -24,19 +24,19 @@ class Index:
     SECTION_QUERY = "SELECT Id, Name, Text FROM sections"
 
     @staticmethod
-    def stream(dbfile, maxsize, toprank, scoring):
+    def stream(db_file, maxsize, toprank, scoring):
         """
         Streams documents from an articles.sqlite file. This method is a generator and will yield a row at time.
 
         Args:
-            dbfile: input SQLite file
+            db_file: input SQLite file
             maxsize: maximum number of documents to process
             toprank: only index the topn ranked articles by citation count within the dataset
             scoring: True if index uses a scoring model, False otherwise
         """
 
         # Connection to database file
-        db = sqlite3.connect(dbfile)
+        db = sqlite3.connect(db_file)
         cur = db.cursor()
 
         # Select sections from tagged articles
@@ -104,12 +104,12 @@ class Index:
         return {"path": vectors} if vectors else None
 
     @staticmethod
-    def embeddings(dbfile, vectors, maxsize, toprank):
+    def embeddings(db_file, vectors, maxsize, toprank):
         """
         Builds a vector embeddings index.
 
         Args:
-            dbfile: input SQLite file
+            db_file: input SQLite file
             vectors: path to vectors file or configuration
             maxsize: maximum number of documents to process
             toprank: only index the topn ranked articles by citation count within the dataset
@@ -124,10 +124,10 @@ class Index:
 
         # Build scoring index if scoring method provided
         if scoring:
-            embeddings.score(Index.stream(dbfile, maxsize, toprank, scoring))
+            embeddings.score(Index.stream(db_file, maxsize, toprank, scoring))
 
         # Build embeddings index
-        embeddings.index(Index.stream(dbfile, maxsize, toprank, scoring))
+        embeddings.index(Index.stream(db_file, maxsize, toprank, scoring))
 
         return embeddings
 
@@ -143,10 +143,10 @@ class Index:
             toprank: only index the topn ranked articles by citation count within the dataset
         """
 
-        dbfile = os.path.join(path, "articles.sqlite")
+        db_file = os.path.join(path, "articles.sqlite")
 
         print("Building new model")
-        embeddings = Index.embeddings(dbfile, vectors, maxsize, toprank)
+        embeddings = Index.embeddings(db_file, vectors, maxsize, toprank)
         embeddings.save(path)
 
 

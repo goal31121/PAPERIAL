@@ -26,7 +26,7 @@ class Models:
             (embeddings, db handle)
         """
 
-        dbfile = os.path.join(path, "articles.sqlite")
+        db_file = os.path.join(path, "articles.sqlite")
 
         embeddings = None
         if any(os.path.isfile(os.path.join(path, x)) for x in ["config", "config.json"]):
@@ -35,7 +35,7 @@ class Models:
             embeddings.load(path)
 
         # Connect to database file
-        db = sqlite3.connect(dbfile)
+        db = sqlite3.connect(db_file)
 
         return (embeddings, db)
 

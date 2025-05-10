@@ -51,8 +51,8 @@ class Application:
             data: input data
         """
 
-        dbfile = os.path.join(self.path, "articles.sqlite")
-        with sqlite3.connect(dbfile) as db:
+        db_file = os.path.join(self.path, "articles.sqlite")
+        with sqlite3.connect(db_file) as db:
             cur = db.cursor()
 
             # Query for best matches

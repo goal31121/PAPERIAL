@@ -20,18 +20,18 @@ class Export:
     """
 
     @staticmethod
-    def stream(dbfile, output):
+    def stream(db_file, output):
         """
-        Iterates over each row in dbfile and writes text to output file
+        Iterates over each row in db_file and writes text to output file
 
         Args:
-            dbfile: SQLite file to read
+            db_file: SQLite file to read
             output: output file to store text
         """
 
         with open(output, "w", encoding="utf-8") as out:
             # Connection to database file
-            db = sqlite3.connect(dbfile)
+            db = sqlite3.connect(db_file)
             cur = db.cursor()
 
             # Get all indexed text
@@ -63,11 +63,11 @@ class Export:
             path: model path, if None uses default path
         """
 
-        # Derive path to dbfile
-        dbfile = os.path.join(path, "articles.sqlite")
+        # Derive path to db_file
+        db_file = os.path.join(path, "articles.sqlite")
 
         # Stream text from database to file
-        Export.stream(dbfile, output)
+        Export.stream(db_file, output)
 
 
 if __name__ == "__main__":
