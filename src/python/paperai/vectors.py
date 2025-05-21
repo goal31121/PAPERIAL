@@ -49,7 +49,7 @@ class RowIterator:
         Returns:
             tokens
         """
-
+"result is allowed for"
         result = next(self.rows)
         if result is None:
             raise StopIteration
